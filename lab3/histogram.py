@@ -2,8 +2,50 @@ from  PIL import Image
 import matplotlib.pyplot as ppl
 import matplotlib.image as mpimg
 import numpy as np
+import cv2
+import tkinter
+import scipy.io as sio
+import bisect
+import  matplotlib.colors as col
 
 
+def imadjust(src, tol=1, vin=[0,255], vout=(0,255)):
+    # src : input one-layer image (numpy array)
+    # tol : tolerance, from 0 to 100.
+    # vin  : src image bounds
+    # vout : dst image bounds
+    # return : output img
+
+    dst = src.copy()
+    tol = max(0, min(100, tol))
+
+    if tol > 0:
+        # Compute in and out limits
+        # Histogram
+        hist = np.zeros(256, dtype=np.int)
+        for r in range(src.shape[0]):
+            for c in range(src.shape[1]):
+                hist[src[r,c]] += 1
+        # Cumulative histogram
+        cum = hist.copy()
+        for i in range(1, len(hist)):
+            cum[i] = cum[i - 1] + hist[i]
+
+        # Compute bounds
+        total = src.shape[0] * src.shape[1]
+        low_bound = total * tol / 100
+        upp_bound = total * (100 - tol) / 100
+        vin[0] = bisect.bisect_left(cum, low_bound)
+        vin[1] = bisect.bisect_left(cum, upp_bound)
+
+    # Stretching
+    scale = (vout[1] - vout[0]) / (vin[1] - vin[0])
+    for r in range(dst.shape[0]):
+        for c in range(dst.shape[1]):
+            vs = max(src[r,c] - vin[0], 0)
+            vd = min(int(vs * scale + 0.5) + vout[0], vout[1])
+            dst[r,c] = vd
+    return dst
 
 def cum_hist(hs):
     x, y, z = hs
@@ -45,12 +87,20 @@ lena2 = mpimg.imread("Histogram/lena2.bmp")
 lena3 = mpimg.imread("Histogram/lena3.bmp")
 lena4 = mpimg.imread("Histogram/lena4.bmp")
 hist_im = mpimg.imread("Histogram/hist1.bmp")
-lenaRGB = mpimg.imread("Histogram/jezioro.jpg")
+lenaRGB = mpimg.imread("Histogram/lenaRGB.bmp")
 HSV_lena = Image.fromarray(lenaRGB,mode="HSV")
+HSV_lena = Image.open("Histogram/lenaRGB.bmp")
+HSV_lena  = HSV_lena.convert("HSV")
+
+
+phobos = cv2.imread("Histogram/phobos.bmp",cv2.IMREAD_GRAYSCALE)
 
 
 #
 # ppl.hist(hist_im.flatten(),bins=256,range=(0,255))
+# aq = imadjust(hist_im)
+# ppl.figure(2)
+# ppl.imshow(aq,cmap="gray")
 # ppl.show()
 
 #zad 1
@@ -80,7 +130,7 @@ HSV_lena = Image.fromarray(lenaRGB,mode="HSV")
 # ppl.subplot(224)
 # ppl.imshow(rec,cmap="gray")
 # ppl.show()
-
+#
 
 ##rgb 1
 # ppl.figure(1)
@@ -145,10 +195,30 @@ HSV_lena = Image.fromarray(lenaRGB,mode="HSV")
 # rec_V = Image.fromarray(lenaV).point(lut_v)
 #
 # rec_lenaHSV = Image.merge("HSV",(Image.fromarray(lenaH),Image.fromarray(lenaS),rec_V))
-# ppl.figure(4)
-# ppl.imshow(rec_lenaHSV)
-# ppl.figure(3)
-# ppl.imshow(HSV_lena)
+# #rec_lenaHSV = cv2.cvtColor(np.asarray(rec_lenaHSV),cv2.COLOR_HSV2RGB)
+# rec_lenaHSV = rec_lenaHSV.convert(mode="RGB")
+# HSV_lena.convert(mode="RGB").show()
+# rec_lenaHSV.show()
+
+# #B
+
 #
+eq_phobos = cv2.equalizeHist(phobos)
+hist_zad = sio.loadmat("Histogram/histogramZadany.mat")["histogramZadany"].flatten()
+cv2.imshow("preEq",phobos)
+cv2.imshow("postEq", eq_phobos)
+
+adj_phobos = imadjust(phobos)
+cv2.imshow("adjusted",adj_phobos)
+
+
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+cl1 = clahe.apply(phobos)
+cv2.imshow("CLahe",cl1)
+
+
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
 #
-# ppl.show()
