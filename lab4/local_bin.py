@@ -19,7 +19,7 @@ def basic_adaptive_thresh(im, window_size):
         cur_y, cur_x = imIt.multi_index
         x_beg = cur_x - w_size
         x_end = cur_x + w_size
-        y_beg = cur_y - +w_size
+        y_beg = cur_y - w_size
         y_end = cur_y + w_size
         if x_beg <= 0:
             x_beg = 0
@@ -42,7 +42,9 @@ def basic_adaptive_thresh(im, window_size):
     return  image_cpy
 
 
-def suav_adaptive_thres(im, window_size,k=0.15,R=128):
+
+
+def suav_adaptive_thres(im, window_size,k=-0.15,R=128):
     im_height, im_width = im.shape
     image_cpy = im.copy()
 
