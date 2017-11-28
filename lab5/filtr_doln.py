@@ -4,19 +4,36 @@ import numpy as np
 
 plansz_im = cv2.imread("PrzetWst/plansza.bmp")
 
-gaus_kern = cv2.getGaussianKernel(5,0.7)
-print(gaus_kern)
+paper_mask = np.array([[1,2,1],[2,4,2],[1,2,1]])
+paper_mask = paper_mask / np.sum(paper_mask)
 
-raw_pap_mask = np.array([[1, 2, 1], [2, 4, 2],[1, 2 ,1]])
-pap_mask = np.divide(raw_pap_mask, np.sum(raw_pap_mask))
-#tworzenie kernela/maski
-kernel = np.ones((3,3),np.float32)/25
-dst = cv2.filter2D(plansz_im,-1,kernel)
-dst2 = cv2.filter2D(plansz_im,-1,pap_mask)
-diff = cv2.subtract(plansz_im,dst)
-ppl.imshow(dst)
-ppl.figure("diff")
-ppl.imshow(diff)
-ppl.figure("pap")
-ppl.imshow(dst2)
-ppl.show()
+def get_avr_kern(size):
+    return np.ones((size,size),np.float32) / size**2
+
+def appl_mask(im, kern):
+    dst = cv2.filter2D(im, -1, kern)
+    diff = cv2.absdiff(im, dst)
+    #ppl.subplot(221)
+    ppl.figure(2)
+    ppl.imshow(im)
+    ppl.figure(3)
+    #ppl.subplot(222)
+    ppl.imshow(dst)
+    #ppl.subplot(223)
+    ppl.figure(4)
+    ppl.imshow(diff)
+    ppl.show()
+
+
+#tworzenie kernela/maski n x n
+# mask_3 = get_avr_kern(3)
+# appl_mask(plansz_im,mask_3)
+# mask_5 = get_avr_kern(5)
+# appl_mask(plansz_im,mask_5)
+gauss_kern = cv2.getGaussianKernel(5, 0.5)
+ppl.figure(1)
+ppl.plot(gauss_kern)
+ppl.figure(2)
+appl_mask(plansz_im,paper_mask)
+
+
