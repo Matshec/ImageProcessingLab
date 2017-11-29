@@ -3,7 +3,8 @@ import matplotlib.pyplot as ppl
 import numpy as np
 
 
-bart = cv2.imread("Binaryzacja/bart.bmp",cv2.IMREAD_GRAYSCALE)
+bart = cv2.imread("Binaryzacja/bart.bmp", cv2.IMREAD_GRAYSCALE)
+
 
 # ok - 203 kolor skory
 ppl.imshow(bart,cmap="gray")
