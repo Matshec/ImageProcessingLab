@@ -3,7 +3,7 @@ import matplotlib.pyplot as ppl
 import numpy as np
 import scipy.io as sio
 
-kw_im = cv2.imread("PrzetWst/kw.bmp")
+kw_im = cv2.imread("PrzetWst/jet.bmp")
 masks = sio.loadmat("PrzetWst/maskiPP.mat")
 
 
@@ -43,10 +43,14 @@ ppl.title("sob2")
 ppl.show()
 
 def comb_fil_square(im,mask1,mask2):
+    print(mask1)
+    print(mask2)
     proc_1 = cv2.filter2D(im,-1,mask1)
     proc_2 = cv2.filter2D(im,-1,mask2)
-    temp = np.square(proc_1) + np.square(proc_2)
-    temp = np.sqrt(temp) + 128
+    #konieczne rzutowanie na  wiekszą zmienna przed wykonaniem operacji
+    proc_1 = proc_1.astype(np.uint32)
+    proc_2 = proc_2.astype(np.uint32)
+    temp = np.sqrt(np.square(proc_1) + np.square(proc_2))
     return temp.astype(np.uint8)
 
 
