@@ -43,8 +43,6 @@ ppl.title("sob2")
 ppl.show()
 
 def comb_fil_square(im,mask1,mask2):
-    print(mask1)
-    print(mask2)
     proc_1 = cv2.filter2D(im,-1,mask1)
     proc_2 = cv2.filter2D(im,-1,mask2)
     #konieczne rzutowanie na  wiekszą zmienna przed wykonaniem operacji

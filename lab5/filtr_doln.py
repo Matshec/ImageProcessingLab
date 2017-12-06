@@ -65,8 +65,8 @@ def my_gaus():
     ppl.show()
 
 #tworzenie kernela/maski n x n
-# mask_3 = get_avr_kern(3)
-# appl_mask(plansz_im,mask_3)
+#mask_3 = get_avr_kern(3)
+#appl_mask(plansz_im,mask_3)
 
 # mask_5 = get_avr_kern(5)
 # appl_mask(plansz_im,mask_5)
@@ -81,5 +81,5 @@ def my_gaus():
 
 
 #rozne maski
-# masks_5(plansz_im)
+masks_5(plansz_im)
 
