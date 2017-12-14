@@ -23,7 +23,7 @@ def bilateral_filt(im,diam,sigma1,sigma2):
     dest = im.copy()
     def my_bilater(x,y):
         if hd % 2 != 0:
-            raise Exception
+            raise Exception("must be odd")
         norm_sum = 0
         dest_val = 0
         for i in range(diam):
@@ -54,8 +54,6 @@ def bilateral_filt(im,diam,sigma1,sigma2):
             dest[x][y] = my_bilater(x,y)
 
     return dest
-
-
 
 
 ppl.subplot(1, 2, 1)
