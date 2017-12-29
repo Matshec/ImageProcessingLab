@@ -4,6 +4,7 @@ import matplotlib.pyplot  as ppl
 
 
 img = cv2.imread("Morfologia/hom.bmp",cv2.IMREAD_GRAYSCALE)
+ertka= cv2.imread("Morfologia/ertka.bmp",cv2.IMREAD_GRAYSCALE)
 
 ar = np.array([[0,1,0],
                [1,1,1],
@@ -26,9 +27,13 @@ S2 = np.array([[1,0,1],
                 [0,0,0],
                 [1,0,1]])
 
+#łączona maska - kopiujemu S1 i tam gdzie są 1 w S2 wstawiamy -1 w S3
 S3 = np.array([[-1,1,-1],
                 [1,1,1],
                 [-1,1,-1]],dtype=np.int8)
+
+
+
 
 
 kernel = np.ones((3,3),np.uint8)
@@ -41,7 +46,7 @@ dilation = cv2.dilate(erosion,kernel,iterations=3)
 
 
 output_image = cv2.morphologyEx(img, cv2.MORPH_HITMISS, S3)
-#11 erozja i 3 razy dylatacja
+# 1 erozja i 3 razy dylatacja
 ppl.subplot(211)
 ppl.imshow(img,cmap="gray")
 ppl.subplot(212)
