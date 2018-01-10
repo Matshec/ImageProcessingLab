@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as ppl
+import skimage.morphology as smorf
 
 img = cv2.imread("Morfologia/fingerprint.bmp", cv2.IMREAD_GRAYSCALE)
 
@@ -16,26 +17,26 @@ def get_rotations(kernels):
     return ret
 
 
-def thinning(img, iterations=1):
-    def subtr(img, img2):
-        img2 = cv2.bitwise_not(img2)
-        return cv2.bitwise_and(img, img2)
-
-    kernel = [np.array([[-1, -1, -1], [-1, 1, -1], [1, 1, 1]], dtype=np.int8),
-              np.array([[-1, -1, -1], [1, 1, -1], [-1, 1, -1]], dtype=np.int8)]
-    rotations = get_rotations(kernel)
-    rot_len = len(rotations)
-    kern_iter = 0
-    for i in range(iterations):
-        output_image = cv2.morphologyEx(img, cv2.MORPH_HITMISS, rotations[kern_iter])
-        x = subtr(img, output_image)
-        img = x
-
-        if kern_iter >= rot_len - 1:
-            kern_iter = 0
-        else:
-            kern_iter = kern_iter + 1
-    return img
+# def thinning(img, iterations=1):
+#     def subtr(img, img2):
+#         img2 = cv2.bitwise_not(img2)
+#         return cv2.bitwise_and(img, img2)
+#
+#     kernel = [np.array([[-1, -1, -1], [-1, 1, -1], [1, 1, 1]], dtype=np.int8),
+#               np.array([[-1, -1, -1], [1, 1, -1], [-1, 1, -1]], dtype=np.int8)]
+#     rotations = get_rotations(kernel)
+#     rot_len = len(rotations)
+#     kern_iter = 0
+#     for i in range(iterations):
+#         output_image = cv2.morphologyEx(img, cv2.MORPH_HITMISS, rotations[kern_iter])
+#         x = subtr(img, output_image)
+#         img = x
+#
+#         if kern_iter >= rot_len - 1:
+#             kern_iter = 0
+#         else:
+#             kern_iter = kern_iter + 1
+#     return img
 
 
 def img_reconstruct(img_ref, img_mark,ktype=cv2.MORPH_RECT,ksize=(3,3)):
@@ -49,6 +50,26 @@ def img_reconstruct(img_ref, img_mark,ktype=cv2.MORPH_RECT,ksize=(3,3)):
             break
     return img_res
 
+#net
+def skel(img):
+    size = np.size(img)
+    skel = np.zeros(img.shape, np.uint8)
+
+    ret, img = cv2.threshold(img, 127, 255, 0)
+    element = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
+    done = False
+
+    while not done:
+        eroded = cv2.erode(img, element)
+        temp = cv2.dilate(eroded, element)
+        temp = cv2.subtract(img, temp)
+        skel = cv2.bitwise_or(skel, temp)
+        img = eroded.copy()
+
+        zeros = size - cv2.countNonZero(img)
+        if zeros == size:
+            done = True
+    return skel
 
 def imshow_gray(img):
     ppl.imshow(img,cmap="gray")
@@ -78,4 +99,24 @@ if __name__ == "__main__":
     res = img_reconstruct(img,marker)
     ppl.imshow(res,cmap="gray")
     ppl.show()
+
+
+    # test skel
+
+    # img_bone = cv2.imread("Morfologia/kosc.bmp", cv2.IMREAD_GRAYSCALE)
+    # img_b = np.asarray(img_bone,dtype=np.bool)
+    # ret = smorf.skeletonize(img_b)#skel(img)
+    # imshow_gray(ret)
+    # ppl.show()
+
+
+    # thinning
+    # thin = smorf.thin(img)
+    # imshow_gray(thin)
+    # ppl.show()
+    #
+
+
+
+
 

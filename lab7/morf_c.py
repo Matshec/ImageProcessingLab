@@ -24,7 +24,6 @@ img = cv2.imread("Morfologia/ferrari.bmp",cv2.IMREAD_GRAYSCALE)
 
 #closing
 
-#
 # ppl.figure("opening")
 # elem = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
 # dilat_im = cv2.dilate(img,elem)
