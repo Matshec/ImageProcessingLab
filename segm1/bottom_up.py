@@ -19,13 +19,32 @@ print(img.shape)
 
 
 class Divider:
-    def __init__(self, img, Division_lim, Max_divs):
+    progKolorow = 5 / 255
+
+    def __init__(self, img, Division_lim, Max_dev):
         self.img = img
         self.serRes = np.zeros(img.shape, dtype=np.uint8)
         self.MRes = np.zeros(img.shape, dtype=np.uint8)
         self.index = 1
         self.DIV_LIMIT = Division_lim
-        self.MAX_DEV = Max_divs
+        self.MAX_DEV = Max_dev
+
+
+
+    def start(self):
+        self.split(self.img,0,255,0,255)
+        self.join()
+
+        U2 = np.unique(self.segRes)
+
+        for i in  range(0 ,U2.size):
+            C = self.segRes == U2[i]
+            C = np.asarray(C,dtype=np.uint8)
+            self.segRes[C] = i
+
+        ppl.imshow(self.segRes)
+        ppl.show()
+
 
     def split(self, img, co1x, co2x, co3y, co4y):
         ROI = img[co1x:co2x, co3y:co4y]
@@ -50,3 +69,39 @@ class Divider:
 
 
 
+    def join(self):
+        i = 0
+        IB = self.segRes == i
+        IB = np.asarray(IB,dtype=np.uint8)
+        while i <= self.index:
+
+            if np.any(IB):
+                nonzer = np.nonzero(IB)[0]
+                yF = nonzer[0]
+                xF = nonzer[1]
+                imDil = cv2.dilate(IB,cv2.getStructuringElement(cv2.MORPH_RECT,(3,3)))
+                imDiff = cv2.absdiff(imDil,IB)
+                IbMult = imDiff * self.serRes
+                IBMultNZ = np.nonzero(IbMult)
+                IBUnique = np.unique(IBMultNZ)
+                joined = 0
+                for k in range(0, IBUnique.size):
+                    IBS = self.segRes == IBUnique[k]
+                    IBS = np.asarray(IBS,dtype=np.uint8)
+                    nonzer = np.nonzero(IBS)[0]
+                    yFS = nonzer[0]
+                    xFS = nonzer[1]
+
+
+                    rozniczaKolorow = np.abs(self.MRes[yF, xF] - self.MRes[yFS, xFS])
+                    if rozniczaKolorow < self.progKolorow:
+                        self.segRes[IBS] = i
+                        joined = 1
+                    if joined == 0:
+                        i = + 1
+            else:
+                i = i +1
+
+
+newDeivider  = Divider(img,8,00.5)
+newDeivider.start()

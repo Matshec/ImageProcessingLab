@@ -13,8 +13,12 @@ img = cv2.imread('KrawedzieHough/lab112.png', cv2.IMREAD_GRAYSCALE)
 edges = cv2.Canny(img, 20, 70)
 
 
-imshow_(img, 'original', 1, 2, 1)
-imshow_(edges, 'edges', 1, 2, 2)
+ppl.subplot(121)
+ppl.imshow(img,cmap="gray")
+ppl.title("oryginal")
+ppl.subplot(122)
+ppl.imshow(edges,cmap="gray")
+ppl.title("edges")
 ppl.show()
 
 minLineLength = 100
@@ -29,5 +33,6 @@ img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 for x1,y1,x2,y2 in lines[0]:
     cv2.line(img, (x1,y1), (x2,y2), (0, 255, 0), 2)
 
+ppl.figure(2)
 ppl.imshow(img)
 ppl.show()

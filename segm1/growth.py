@@ -27,12 +27,12 @@ while len(stack) > 0:
         for j in range(-1, 2):
             currentX, currentY = main_x + i, main_y + j
             avg_brightness = (avg_brightness * (segmented_count - 1) + img[main_x, main_y]) / segmented_count
-
             if visited[currentX, currentY] != 1 and np.abs(img[currentX, currentY] - avg_brightness) < STEP:
                 segm[currentX, currentY] = img[currentX, currentY]
                 segmented_count += 1
                 stack.append((currentX, currentY))
             visited[currentX, currentY] = 1
+
 
 gauss_kern = cv2.getGaussianKernel(5, 0.8)
 ppl.imshow(cv2.filter2D(segm, -1, gauss_kern), cmap='gray')
