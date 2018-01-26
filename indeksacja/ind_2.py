@@ -61,8 +61,8 @@ for y in range(1, Y):
             img[y, x] = lut[img[y, x]]
 
 # print(lut)
-# rgb = col.label2rgb(img)
-ppl.imshow(img, cmap="gray")
+rgb = col.label2rgb(img)
+ppl.imshow(rgb, cmap="gray")
 ppl.show()
 
 
