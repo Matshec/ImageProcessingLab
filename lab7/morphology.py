@@ -69,12 +69,16 @@ ppl.show()
 
 
 ppl.figure("ertka2")
-out1 = cv2.erode(ertka,kernel,iterations=1)
-out2 = cv2.dilate(out1,kernel,iterations=3)
+out1 = cv2.dilate(ertka,kernel,iterations=1)
+out2 = cv2.erode(out1,kernel,iterations=1)
+out3 = cv2.erode(out2,kernel,iterations=1)
+out4 = cv2.dilate(out3,kernel,iterations=1)
+
+
 ppl.subplot(211)
 ppl.imshow(ertka,cmap="gray")
 ppl.subplot(212)
-ppl.imshow(out2,cmap="gray")
+ppl.imshow(out4,cmap="gray")
 ppl.show()
 
 ppl.figure(2)

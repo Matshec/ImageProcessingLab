@@ -93,16 +93,16 @@ if __name__ == "__main__":
 
 
     #test recostruct
-    img = cv2.imread("Morfologia/text.bmp", cv2.IMREAD_GRAYSCALE)
-    elem = np.ones((51,1),np.int8)
-    marker = cv2.erode(img,elem)
-    res = img_reconstruct(img,marker)
-    ppl.imshow(res,cmap="gray")
-    ppl.show()
+    # img = cv2.imread("Morfologia/text.bmp", cv2.IMREAD_GRAYSCALE)
+    # elem = np.ones((51,1),np.int8)
+    # marker = cv2.erode(img,elem)
+    # res = img_reconstruct(img,marker)
+    # ppl.imshow(res,cmap="gray")
+    # ppl.show()
 
 
     # test skel
-
+    #
     # img_bone = cv2.imread("Morfologia/kosc.bmp", cv2.IMREAD_GRAYSCALE)
     # img_b = np.asarray(img_bone,dtype=np.bool)
     # ret = smorf.skeletonize(img_b)#skel(img)
@@ -111,10 +111,10 @@ if __name__ == "__main__":
 
 
     # thinning
-    # thin = smorf.thin(img)
-    # imshow_gray(thin)
-    # ppl.show()
-    #
+    thin = smorf.thin(img)
+    imshow_gray(thin)
+    ppl.show()
+
 
 
 

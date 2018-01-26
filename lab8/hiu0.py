@@ -12,7 +12,7 @@ import cv2
 #         y.append(val)
 #     return y
 
-def y(v: float, th: float, rho: float) -> float:
+def y(v: float, th = 15, rho=3):
     v = float(v)
     th = float(th)
     rho = float(rho)
@@ -36,6 +36,10 @@ ppl.figure(1)
 ppl.plot(hspace)
 ppl.show()
 ppl.figure(2)
+ppl.imshow(img0,cmap="gray")
+ppl.show()
+
+ppl.figure(3)
 # max1 (th = 15,ro=3)
 print(y(x[0], 15, 3))
 # y = y(x, angles[15], distances[3])
@@ -44,26 +48,6 @@ xe = int(x[len(x) - 1])
 y0 = int(y(x0, 15, 3))
 ye = int(y(xe, 15, 3))
 print(x0, xe)
-lineStart = (x0, y0)
-lineEnd = (xe, ye)
-ppl.imshow(img0, cmap="gray")
+ppl.plot(x,list(map(y,x)))
 ppl.show()
-cv2.line(img0, lineStart,lineEnd, (255, 0, 0), 1)
-ppl.figure("x")
-ppl.imshow(img0)
-ppl.show()
-# height, width = img0.shape
 
-# for rho, theta in lines[0]:
-#     a = np.cos(theta)
-#     b = np.sin(theta)
-#     x0 = a*rho
-#     y0 = b*rho
-#     x1 = int(x0 + height * (-b))
-#     y1 = int(y0 + height * (a))
-#     x2 = int(x0 - height * (-b))
-#     y2 = int(y0 - height * (a))
-#
-#     cv2.line(img0, (x1,y1), (x2,y2), (0, 255, 0), 1)
-#
-# cv2.imwrite('kwadraty1.jpg', img0)

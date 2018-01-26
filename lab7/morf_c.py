@@ -23,7 +23,7 @@ img = cv2.imread("Morfologia/ferrari.bmp",cv2.IMREAD_GRAYSCALE)
 # ppl.show()
 
 #closing
-
+#
 # ppl.figure("opening")
 # elem = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
 # dilat_im = cv2.dilate(img,elem)
@@ -42,7 +42,7 @@ img = cv2.imread("Morfologia/ferrari.bmp",cv2.IMREAD_GRAYSCALE)
 # ppl.show()
 
 #top hat
-# top hat  =  src - open
+# #top_hat  =  src - open
 # elem = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
 # top_hat_im = cv2.morphologyEx(img,cv2.MORPH_TOPHAT,elem)
 # ppl.figure("top hat")
@@ -55,20 +55,20 @@ img = cv2.imread("Morfologia/ferrari.bmp",cv2.IMREAD_GRAYSCALE)
 # ppl.show()
 
 #bottom hat
-#closing  - img
+# closing  - img
 # elem = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
 # clos_img = cv2.morphologyEx(img,cv2.MORPH_CLOSE,elem)
-# bt_hat = img - clos_img
+# bt_hat = clos_img - img
 # ppl.figure("bt hat")
 # ppl.subplot(211)
 # ppl.imshow(img,cmap="gray")
 # ppl.title("orig")
 # ppl.subplot(212)
 # ppl.imshow(bt_hat,cmap="gray")
-# ppl.title("top hat")
+# ppl.title("bot hat")
 # ppl.show()
 
-
+#
 rice_img = cv2.imread("Binaryzacja/rice.png",cv2.IMREAD_GRAYSCALE)
 big_elem = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(10,10))
 top_rice = cv2.morphologyEx(rice_img,cv2.MORPH_TOPHAT,big_elem)
