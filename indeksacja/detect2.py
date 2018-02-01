@@ -15,17 +15,9 @@ ppl.show()
 for cnt in contours:
     approx = cv2.approxPolyDP(cnt,0.01*cv2.arcLength(cnt,True),True)
     print(len(approx))
-    if len(approx)==5:
-        print("pentagon")
-        cv2.drawContours(img,[cnt],-1,255,-1)
-    elif len(approx)==3:
-        print("triangle")
-        cv2.drawContours(img,[cnt],0,(0,255,0),-1)
-    elif len(approx)==4:
+    if len(approx)==4:
         print("square")
         cv2.drawContours(img,[cnt],0,(0,0,255),2)
-    elif len(approx) == 9:
-        print("half-circle")
     elif len(approx) == 12:
         print("plus")
         cv2.drawContours(img,[cnt],0,(255,255,0),2)
